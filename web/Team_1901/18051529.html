@@ -1,0 +1,82 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文字瀑布背景</title>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    overflow: hidden;
+}
+</style>
+
+</head>
+<body>
+
+
+        <canvas id="mycanvas" width="450" height="450"></canvas>
+<script>
+//js code
+//获取屏幕分辨率
+var s = window.screen;
+var width = s.width;
+var height = s.height;
+
+//获取画布对象
+var canvas = document.getElementById("mycanvas");
+var context = canvas.getContext("2d");
+
+//设置画布宽高
+canvas.width = width;
+canvas.height = height;
+
+//定义要显示的文字内容
+var str = "18051529";
+//设置文字字体大小
+var fontSize = 24;
+
+//计算页面总列数
+var cols = Math.floor(width/fontSize);
+
+//保存每列文字的纵坐标的数组(因为要设置纵坐标动态改变)  初始化纵坐标
+var drops = [];
+for(var i=0; i<cols; i++)
+    drops.push(0);
+
+//绘画函数
+function draw(){
+    //开头设置一个rgba的颜色用于设置文字清楚之前显示的颜色虚化
+    context.fillStyle = "rgba(0,0,0,0.035)";
+    context.fillRect(0,0,width,height);
+    //设置文字样式
+    context.font = "600 "+fontSize+"px 微软雅黑";
+//文字实际颜色
+    context.fillStyle = randomColor();
+    for(var i=0;i<cols;i++){
+        //指定每列随机显示的汉字位置
+        var index = Math.floor(Math.random()*str.length);
+        //设置每列文字的位置
+        var x = i*fontSize;
+        var y = drops[i]*fontSize;
+        //绘制文字
+        context.fillText(str[index],x,y);
+        //判断是否已经走到底了
+     if(y>width&&Math.random()>0.994){
+drops[i] = 0;
+}
+drops[i]++;
+    }
+}
+setInterval(draw,33);
+function randomColor(){
+var r = Math.floor(Math.random()*256);
+var g = Math.floor(Math.random()*256);
+var b = Math.floor(Math.random()*256);
+return "rgb("+r+","+g+","+b+")";
+}
+</script>
+</body>
+</html>
