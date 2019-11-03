@@ -16,3 +16,10 @@ def projectInfo(cookies):
 def diyInfo(cookies):
     info = a.getRepoInfo()
     return response(projectInfo=info)
+
+
+@route('/commits.py.html')
+def commits(cookies):
+    info = a.getRepoInfo()
+#将info返回给页面
+    return response(projectInfo=info)

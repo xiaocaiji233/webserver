@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="/css/occlusion.css" rel="stylesheet" type="text/css">
+<title>commits</title>
+<script>var __adobewebfontsappname__="dreamweaver"</script>
+<script src="http://use.edgefonts.net/alex-brush:n4:default;aclonica:n4:default.js" type="text/javascript"></script>
+</head>
+
+<body class="occlusion-page">
+<div align="center">
+  <div style="height:110px">
+    <h1 style="font-family: aclonica; font-style: normal; font-weight: 400; font-size: 100px;"> Commits </h1>
+  </div>
+  <hr/>
+</div>
+<div>
+  <hr/>
+  <div>
+    <ul>
+      <li>
+        <div>
+          <svg style="vertical-align:middle" width="30" height="30" viewBox="0 0 " xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#000" id="svg_1" d="m0.75001,14.95637l0,0c0,-7.84597 5.9292,-14.20638 13.24324,-14.20638l0,0c3.51232,0 6.88079,1.49674 9.36438,4.16095c2.48359,2.66421 3.87886,6.27766 3.87886,10.04543l0,0c0,7.84596 -5.9292,14.20638 -13.24324,14.20638l0,0c-7.31404,0 -13.24324,-6.36041 -13.24324,-14.20638zm6.62162,0l0,0c0,3.92298 2.9646,7.10319 6.62162,7.10319c3.65702,0 6.62162,-3.18021 6.62162,-7.10319c0,-3.92298 -2.9646,-7.10319 -6.62162,-7.10319l0,0c-3.65702,0 -6.62162,3.18021 -6.62162,7.10319z" stroke-width="1.5" fill="#619E73"/>
+          </svg>
+          <span style="font-size: 24px ;vertical-align: middle">xxx</span>
+          <table width="100%" border="1" cellspacing="0" cellpadding="2">
+            <tbody>
+              <tr>
+                <th scope="col" width="160px" align="center">committer</th>
+                <th scope="col" align="center">message</th>
+                <th scope="col" width="180px" align="center">date</th>
+              </tr>
+              <tr>
+                <td align="center">joungtao</td>
+                <td>Merge branch 'master' of https://github.com/cxsjclassroom/webserver</td>
+                <td align="center">2019-09-29T13:35:30Z</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+<?python
+for repoName,info in projectInfo.items():
+?>
+      <li>
+        <svg style="vertical-align:middle" width="30" height="30" viewBox="0 0 " xmlns="http://www.w3.org/2000/svg">
+          <path stroke="#000" id="svg_1" d="m0.75001,14.95637l0,0c0,-7.84597 5.9292,-14.20638 13.24324,-14.20638l0,0c3.51232,0 6.88079,1.49674 9.36438,4.16095c2.48359,2.66421 3.87886,6.27766 3.87886,10.04543l0,0c0,7.84596 -5.9292,14.20638 -13.24324,14.20638l0,0c-7.31404,0 -13.24324,-6.36041 -13.24324,-14.20638zm6.62162,0l0,0c0,3.92298 2.9646,7.10319 6.62162,7.10319c3.65702,0 6.62162,-3.18021 6.62162,-7.10319c0,-3.92298 -2.9646,-7.10319 -6.62162,-7.10319l0,0c-3.65702,0 -6.62162,3.18021 -6.62162,7.10319z" stroke-width="1.5" fill="#619E73"/>
+        </svg>
+        <span style="font-size: 24px ;vertical-align: middle">
+<?python
+	_[repoName]
+?>
+        </span> 
+        <table width="100%" border="1" cellspacing="0" cellpadding="2">
+          <tbody>
+            <tr>
+              <th scope="col" width="160px" align="center">committer</th>
+              <th scope="col" align="center">message</th>
+              <th scope="col" width="180px" align="center">date</th>
+            </tr>
+
+<?python
+	for i in info['commits']:
+?>
+            <tr>
+              <td align="center">
+<?python
+		_[i['commit']['committer']['name']]
+?>
+				</td>
+              <td>
+<?python
+		_[i['commit']['message']]
+?>
+				</td>
+              <td align="center">
+<?python
+		_[i['commit']['committer']['date']]
+?>
+				</td>
+            </tr>
+<?python
+	pass
+?>
+          </tbody>
+        </table>
+      </li>
+<?python
+pass
+?>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
