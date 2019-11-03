@@ -32,6 +32,7 @@ def getRepoInfo():
             'branches_count': len(branchInfo),
             'branches_name': list(map(lambda b: b['name'], branchInfo)),
             'commits': commitsInfo,
+            'commits_'
             'commits_count': len(commitsInfo),
 
         }
