@@ -28,7 +28,7 @@ def getRepoInfo():
             'size': repoInfo['size'],
             'forks_count': repoInfo['forks_count'],
             'open_issues': repoInfo['open_issues'],
-            'branches': branchInfo,
+            'branches': list(branchInfo),
             'branches_count': len(branchInfo),
             'commits': commitsInfo,
             'commits_count': len(commitsInfo),

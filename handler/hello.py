@@ -4,7 +4,7 @@ from app import route, response, redirect, config
 
 import logic.Team1901.reposInfo as a
 repos = ['cxsjclassroom/webserver',"octocat/Hello-World"]
-@route('/hello.py.html')
+@route('/diy.py.html')
 
 def projectInfo(cookies):
     info = a.getRepoInfo()
