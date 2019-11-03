@@ -30,8 +30,10 @@ def getRepoInfo():
             'open_issues': repoInfo['open_issues'],
             'branches': branchInfo,
             'branches_count': len(branchInfo),
+            'branches_name': list(map(lambda b: b['name'], branchInfo)),
             'commits': commitsInfo,
             'commits_count': len(commitsInfo),
+
         }
     return info
 # 读取url的信息，并建立缓存
