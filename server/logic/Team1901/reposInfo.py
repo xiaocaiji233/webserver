@@ -1,11 +1,12 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import ssl
 import requests
 import os
 import json
 import pprint
 
-repos = ['cxsjclassroom/webserver',"octocat/Hello-World"]
+repos = ['cxsjclassroom/webserver', "octocat/Hello-World"]
+
 
 def getRepoInfo():
     info = {}
@@ -19,6 +20,8 @@ def getRepoInfo():
         commitsInfo = readURL('Repositories/commitsInfo/%s' % (repo), repoInfo['commits_url'].replace('{/sha}', ''))
         commitsInfo = commitsInfo and json.loads(commitsInfo)
         pprint.pprint(commitsInfo)
+        gitClone('cxsjclassroom/webserver')
+        gitLog('cxsjclassroom/webserver')
 
         # 提取想要的信息保存在info中
         info[repo] = {
@@ -36,21 +39,49 @@ def getRepoInfo():
 
         }
     return info
+
+
+def gitClone(name):
+    projectPath = os.path.abspath('data/gitRepo/%s' % (name))  # 保存的路径
+    not os.path.isdir(projectPath) and os.makedirs(projectPath)
+    if os.path.exists(projectPath):
+        return True
+
+    cmd = 'git clone http://github.com/%s.git %s' % (name, projectPath)
+    cwd = os.getcwd()  # 记录当前目录
+    os.chdir(projectPath)  # 跳转到需要保存代码库的路径
+    result = os.system(cmd)  # 执行shell命令
+    os.chdir(cwd)  # 跳转回到当前目录
+    if result != 0:
+        return False
+    return True
+
+
+def gitLog(name):
+    projectPath = os.path.abspath('data/gitRepo/%s' % name)  # 保存的路径
+    cmd = 'git log --pretty=format:"%h -%an,%ar: %s">log.txt'
+    cwd = os.getcwd()  # 记录当前目录
+    os.chdir(projectPath)  # 跳转到需要保存代码库的路径
+    if gitClone(name) is True:
+        result = os.system(cmd)  # 执行shell命令
+
+    os.chdir(cwd)  # 跳转回到当前目录
+
+
 # 读取url的信息，并建立缓存
 def readURL(cache, url):
-# 看看该url是否访问过
+    # 看看该url是否访问过
     cache = 'data/cache/%s' % cache
     if os.path.isfile(cache):
-      with open(cache, 'r') as f:
-        content = f.read()
-      return content
+        with open(cache, 'r') as f:
+            content = f.read()
+        return content
 
     content = requests.get(url).content.decode()
 
-# 把文件内容保存下来，以免多次重复访问url，类似于缓存
+    # 把文件内容保存下来，以免多次重复访问url，类似于缓存
     folder = cache.rpartition('/')[0]
     not os.path.isdir(folder) and os.makedirs(folder)
     with open(cache, 'w') as f:
-      f.write(content)
+        f.write(content)
     return content
-
