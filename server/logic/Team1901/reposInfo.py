@@ -5,7 +5,28 @@ import os
 import json
 import pprint
 
-repos = ['cxsjclassroom/webserver', "octocat/Hello-World"]
+repos = ['cxsjclassroom/webserver', "octocat/Hello-World", "apache/logging-log4j2"]
+
+
+def getCommitsCount(repo):
+    page = 1
+    count = 0
+
+    url = 'https://api.github.com/repos/' + repo + '/commits?page=' + str(page)
+    commitsInfo = readURL('Repositories/commitsInfo/%s_page_%s' % (repo, str(page)), url)
+    commitsInfo = commitsInfo and json.loads(commitsInfo)
+    count += len(commitsInfo)
+    while True:
+        if len(commitsInfo) == 0:
+            break
+
+        page += 1
+        url = 'https://api.github.com/repos/' + repo + '/commits?page=' + str(page)
+        commitsInfo = readURL('Repositories/commitsInfo/%s_page_%s' % (repo, str(page)), url)
+        commitsInfo = commitsInfo and json.loads(commitsInfo)
+        count += len(commitsInfo)
+        print(repo + ': ' + str(len(commitsInfo)) + ' Page: ' + str(page) + '\n')
+    return count
 
 
 def getRepoInfo():
@@ -14,14 +35,14 @@ def getRepoInfo():
         repo_url = 'https://api.github.com/repos/%s' % repo  # 确定url
         repoInfo = readURL('Repositories/reposInfo/%s' % (repo), repo_url)  # 访问url得到数据
         repoInfo = repoInfo and json.loads(repoInfo)  # 将数据类型转换
+        pprint.pprint(repoInfo)
         branchInfo = readURL('Repositories/branchInfo/%s' % (repo), repoInfo['branches_url'].replace('{/branch}', ''))
         branchInfo = branchInfo and json.loads(branchInfo)
-        pprint.pprint(branchInfo)
+        # pprint.pprint(branchInfo)
         commitsInfo = readURL('Repositories/commitsInfo/%s' % (repo), repoInfo['commits_url'].replace('{/sha}', ''))
         commitsInfo = commitsInfo and json.loads(commitsInfo)
-        pprint.pprint(commitsInfo)
+        # pprint.pprint(commitsInfo)
         gitClone('cxsjclassroom/webserver')
-        gitLog('cxsjclassroom/webserver')
 
         # 提取想要的信息保存在info中
         info[repo] = {
@@ -35,9 +56,10 @@ def getRepoInfo():
             'branches_count': len(branchInfo),
             'branches_name': list(map(lambda b: b['name'], branchInfo)),
             'commits': commitsInfo,
-            'commits_count': len(commitsInfo),
+            'commits_count': getCommitsCount(repo),
 
         }
+
     return info
 
 
@@ -47,7 +69,7 @@ def gitClone(name):
     if os.path.exists(projectPath):
         return True
 
-    cmd = 'git clone http://github.com/%s.git %s' % (name, projectPath)
+    cmd = 'git clone %s.ghttp://github.com/it %s' % (name, projectPath)
     cwd = os.getcwd()  # 记录当前目录
     os.chdir(projectPath)  # 跳转到需要保存代码库的路径
     result = os.system(cmd)  # 执行shell命令
@@ -58,14 +80,16 @@ def gitClone(name):
 
 
 def gitLog(name):
-    projectPath = os.path.abspath('data/gitRepo/%s' % name)  # 保存的路径
+    projectPath = os.path.abspath('data/gitRepo/%s' % (name))  # 保存的路径
     cmd = 'git log --pretty=format:"%h -%an,%ar: %s">log.txt'
     cwd = os.getcwd()  # 记录当前目录
     os.chdir(projectPath)  # 跳转到需要保存代码库的路径
     if gitClone(name) is True:
         result = os.system(cmd)  # 执行shell命令
+        return result
 
     os.chdir(cwd)  # 跳转回到当前目录
+    return False
 
 
 # 读取url的信息，并建立缓存
