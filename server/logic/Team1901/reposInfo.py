@@ -25,6 +25,9 @@ def getCommitsCount(repo):
         commitsInfo = readURL('Repositories/commitsInfo/%s_page_%s' % (repo, str(page)), url)
         commitsInfo = commitsInfo and json.loads(commitsInfo)
         count += len(commitsInfo)
+        pprint.pprint(commitsInfo)
+        for c in commitsInfo:
+            input(c)
         print(repo + ': ' + str(len(commitsInfo)) + ' Page: ' + str(page) + '\n')
     return count
 
@@ -35,7 +38,7 @@ def getRepoInfo():
         repo_url = 'https://api.github.com/repos/%s' % repo  # 确定url
         repoInfo = readURL('Repositories/reposInfo/%s' % (repo), repo_url)  # 访问url得到数据
         repoInfo = repoInfo and json.loads(repoInfo)  # 将数据类型转换
-        pprint.pprint(repoInfo)
+        #pprint.pprint(repoInfo)
         branchInfo = readURL('Repositories/branchInfo/%s' % (repo), repoInfo['branches_url'].replace('{/branch}', ''))
         branchInfo = branchInfo and json.loads(branchInfo)
         # pprint.pprint(branchInfo)
