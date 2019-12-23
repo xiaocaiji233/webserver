@@ -27,3 +27,13 @@ footer {
 	text-align: center;
 	text-transform: uppercase;
 }
+
+#json {
+    display: none;
+}
+
+.charts {
+    max-width: 80%;
+    margin: 0 auto;
+    background: #fff;
+}
